@@ -37,4 +37,10 @@ final class AppController extends AbstractController
     {
         return $this->render('app/testimonials.html.twig');
     }
+
+    #[Route('/register', name: 'app_register')]
+    public function appRegister(): Response
+    {
+        return $this->render('registration/register.html.twig');
+    }
 }
