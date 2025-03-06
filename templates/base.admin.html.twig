@@ -7,7 +7,7 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin Minics</title>
+  <title>{% block title %}{% endblock %}</title>
 
   <!-- Bulma is included -->
   <link rel="stylesheet" href="{{ asset('css/main.min.css') }}" />
@@ -73,7 +73,7 @@
         <p class="menu-label">General</p>
         <ul class="menu-list">
           <li>
-            <a href="index.php" class="has-icon">
+            <a href="{{ path('app_admin') }}" class="has-icon">
               <span class="icon"><i class="mdi mdi-desktop-mac"></i></span>
               <span class="menu-item-label">Dashboard</span>
             </a>
@@ -82,20 +82,20 @@
         <p class="menu-label">MENU</p>
         <ul class="menu-list">
           <li>
-            <a href="gestion_boutique.php" class="has-icon">
+            <a href="{{ path('app_admin_products') }}" class="has-icon">
               <span class="icon"><span class="mdi mdi-store"></span>
               </span>
               <span class="menu-item-label">Boutique</span>
             </a>
           </li>
           <li>
-            <a href="gestion_commande.php" class="has-icon">
+            <a href="{{ path('app_admin_orders') }}" class="has-icon">
               <span class="icon"><span class="mdi mdi-sheep"></span> </span>
               <span class="menu-item-label">Commandes</span>
             </a>
           </li>
           <li>
-            <a href="gestion_user.php" class="has-icon">
+            <a href="{{ path('app_admin_users') }}" class="has-icon">
               <span class="icon"><i class="mdi mdi-account-circle"></i></span>
               <span class="menu-item-label">Utilisateurs</span>
             </a>
