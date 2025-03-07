@@ -36,7 +36,7 @@ class RegistrationController extends AbstractController
             // dump($passwordHash);
             // dump($user);
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
 
