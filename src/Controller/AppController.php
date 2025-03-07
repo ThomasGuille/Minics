@@ -37,4 +37,13 @@ final class AppController extends AbstractController
     {
         return $this->render('app/testimonials.html.twig');
     }
+
+    #[Route('/account', name: 'app_account')]
+    public function appAccount(): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->render('app/account.html.twig');
+    }
 }

@@ -55,19 +55,23 @@
                     </span>
                 </a>
                 </div>
-                <from class="search_form">
-                <input type="text" class="form-control" placeholder="Search here...">
-                <button class="" type="submit">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-                </from>
+                <form class="search_form">
+                    <input type="text" class="form-control" placeholder="Search here...">
+                    <button class="" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </form>
+                {# {{ dump(app.user) }}    app.user contient les infos de l'utilisateur connecté #}
                 <div class="user_option_box">
-                <a href="" class="account-link">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <span>
-                    Mon compte
-                    </span>
-                </a>
+
+                {% if app.user %}
+                    <a href="{{ path('app_account') }}" class="account-link">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <span>
+                        Mon compte
+                        </span>
+                    </a>
+                {% endif %}
                 <a href="" class="cart-link">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     <span>
@@ -109,15 +113,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_testimonials') }}">Livre d'or</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_register') }}">Créer un compte</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}">Me connecter</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}">Me déconnecter</a>
-                    </li>
+
+                    {% if not app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_register') }}">Créer un compte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}">Me connecter</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Me déconnecter</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 </div>
             </nav>

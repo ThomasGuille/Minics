@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Minics | Mon compte
+{% endblock %}
+
+{% block body %}
+
+{# 
+    Créer le compte utilisateur, afficher les données de l'utilisateur via app.user
+    Bloquer l'accès aux utilisateurs non connectés
+ #}
+    {{ dump(app.user) }}
+
+    <h1>Mon compte</h1>
+    <section>
+        <div>
+            <p>Prénom: {{ app.user.firstName }}</p>
+            <p>Nom: {{ app.user.lastName }}</p>
+        </div>
+        <div>
+            <p>Email: {{ app.user.email }}</p>
+            <p>Téléphone: {{ app.user.phone }}</p>
+        </div>
+        <div>
+            <p>Adresse: {{ app.user.address }}</p>
+            <p>Code postal: {{ app.user.zipcode }}</p>
+            <p>Ville: {{ app.user.city }}</p>
+        </div>
+    </section>
+{% endblock %}
