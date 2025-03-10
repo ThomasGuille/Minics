@@ -31,4 +31,10 @@ final class AdminController extends AbstractController
     {
         return $this->render('admin/users.html.twig');
     }
+
+    #[Route('/admin/category', name: 'app_admin_category')]
+    public function adminCategory(): Response
+    {
+        return $this->render('admin/category.html.twig');
+    }
 }
