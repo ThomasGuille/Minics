@@ -6,6 +6,12 @@
 
 {% block body %}
 
+    <style>
+        .modal-backdrop{
+            z-index: 1 !important;
+        }
+    </style>
+
     <div class="container mb-4">
         {% for label, messages in app.flashes(["success", "danger"]) %}
             {% for message in messages %}
@@ -15,12 +21,13 @@
             {% endfor %}
         {% endfor %}
 
-        <div>
+        <div class="mb-4">
             <h2 class="my-4 fs-3">Liste des Produits</h2>
 
             <table class="table table-border">
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Référence</th>
                         <th>Titre</th>
                         <th>Catégorie</th>
@@ -30,7 +37,6 @@
                         <th>Description</th>
                         <th>Stock</th>
                         <th>Prix</th>
-                        <th>Image</th>
                         <th>Date</th>
                         <th>Actions</th>
                     </tr>
@@ -39,6 +45,7 @@
                     {% for item in dbProduct %}
                     {# {{ dump(item) }} #}
                         <tr>
+                            <td><img src="{{ asset('uploads/images/' ~ item.picture) }}" alt="{{ item.picture }}"></td>
                             <td>{{ item.reference }}</td>
                             <td>{{ item.title }}</td>
                             <td>{{ item.category.title }}</td>
@@ -47,16 +54,15 @@
                             <td>{{ item.gender }}</td>
                             <td>{{ item.description }}</td>
                             <td>{{ item.stock }}</td>
-                            <td>{{ item.price }}</td>
-                            <td><img src="/uploads/images/{{item.picture }}"/></td>
+                            <td>{{ item.price }}€</td>
                             <td>{{ item.createdAt|date('d/m/Y à H:i:s') }}</td>
                             <td>
                                 <a href="{{ path('app_admin_product_update', {'id': item.id}) }}" class="btn btn-dark mb-2" ><i class="fa-solid fa-pen"></i></a>
-                                {# <buuton type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#product-{{ item.id }}"></i></button> #}
+                                <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#product-{{ item.id }}"></i></button>
                             </td>
 
                             <!-- Modal -->
-                            {# <div class="modal fade" id="product-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="product-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                     <div class="modal-header">
@@ -64,15 +70,15 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Voulez vous réellement supprimer la catégorie <strong>{{ item.title }}</strong>?
+                                        Voulez vous réellement supprimer le produit <strong>{{ item.title }}</strong>?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                        <a href="{{ path('app_admin_products_delete', {'id': item.id}) }}" type="button" class="btn btn-primary">Confirmer</a>
+                                        <a href="" type="button" class="btn btn-primary">Confirmer</a>
                                     </div>
                                     </div>
                                 </div>
-                            </div> #}
+                            </div>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -65,6 +65,7 @@ final class AdminController extends AbstractController
             return $this->redirectToRoute('app_admin_products');
         }
 
+        // il est également possible de: $repoProduct = $entityManager->getRepository(Product::class); au lieu de l'importer en argument de la méthode
         $dbProduct = $repoProduct->findAll();
 
         return $this->render('admin/products.html.twig', [
