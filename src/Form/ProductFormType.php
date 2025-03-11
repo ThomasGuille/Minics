@@ -111,6 +111,7 @@ class ProductFormType extends AbstractType
                     ]
             ])
             ->add('category', EntityType::class, [
+                'label' => 'Catégorie',
                 'class' => Category::class,
                 'choice_label' => 'title',
             ])

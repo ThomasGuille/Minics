@@ -8,14 +8,15 @@ use App\Entity\Category;
 use App\Form\ProductFormType;
 use App\Form\CategoryFormType;
 use Doctrine\ORM\EntityManager;
+use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class AdminController extends AbstractController
 {
@@ -26,14 +27,17 @@ final class AdminController extends AbstractController
     }
 
     #[Route('/admin/products', name: 'app_admin_products')]
-    public function adminProducts(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    #[Route('/admin/products/update/{id}', name: 'app_admin_product_update')]
+    public function adminProducts(?Product $product, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, ProductRepository $repoProduct): Response
     {
+        dump($product);
+        
         $product = new Product;
         $form = $this->createForm(ProductFormType::class, $product);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            // $product->setCreatedAt(new \DateTimeImmutable);
+            
             $pictureFile = $form->get('picture')->getData();
             // dump($pictureFile);
             if($pictureFile){
@@ -51,15 +55,31 @@ final class AdminController extends AbstractController
                 }catch (FileException $e) {
                     dump($e);
                 }
+                $product->setPicture($newFileName);
             }
-            // $entityManager->persist($product);
-            // $entityManager->flush();
+            $product->setCreatedAt(new \DateTimeImmutable);
+            // dump($product);
+            $entityManager->persist($product);
+            $entityManager->flush();
+            $this->addFlash('success', "L'article a été ajouté.");
+            return $this->redirectToRoute('app_admin_products');
         }
 
+        $dbProduct = $repoProduct->findAll();
+
         return $this->render('admin/products.html.twig', [
-            'productForm' => $form
+            'productForm' => $form,
+            'dbProduct' => $dbProduct
         ]);
     }
+
+    // #[Route('/admin/products/update/{id}', name: 'app_admin_product_update')]
+    // public function adminProductUpdate($id, Product $product, EntityManagerInterface $entityManager, ProductRepository $repoProduct, Request $request): Response {
+        
+    // }
+
+
+
 
     #[Route('/admin/orders', name: 'app_admin_orders')]
     public function adminOrders(): Response

@@ -7,6 +7,78 @@
 {% block body %}
 
     <div class="container mb-4">
+        {% for label, messages in app.flashes(["success", "danger"]) %}
+            {% for message in messages %}
+                <div class="bg-{{ label }} text-white p-3 mb-3">
+                    {{ message|raw }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div>
+            <h2 class="my-4 fs-3">Liste des Produits</h2>
+
+            <table class="table table-border">
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Titre</th>
+                        <th>Catégorie</th>
+                        <th>Mémoire</th>
+                        <th>Couleur</th>
+                        <th>Genre</th>
+                        <th>Description</th>
+                        <th>Stock</th>
+                        <th>Prix</th>
+                        <th>Image</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in dbProduct %}
+                    {# {{ dump(item) }} #}
+                        <tr>
+                            <td>{{ item.reference }}</td>
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.category.title }}</td>
+                            <td>{{ item.size }}</td>
+                            <td>{{ item.color }}</td>
+                            <td>{{ item.gender }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.stock }}</td>
+                            <td>{{ item.price }}</td>
+                            <td><img src="/uploads/images/{{item.picture }}"/></td>
+                            <td>{{ item.createdAt|date('d/m/Y à H:i:s') }}</td>
+                            <td>
+                                <a href="{{ path('app_admin_product_update', {'id': item.id}) }}" class="btn btn-dark mb-2" ><i class="fa-solid fa-pen"></i></a>
+                                {# <buuton type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#product-{{ item.id }}"></i></button> #}
+                            </td>
+
+                            <!-- Modal -->
+                            {# <div class="modal fade" id="product-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation suppression</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Voulez vous réellement supprimer la catégorie <strong>{{ item.title }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                        <a href="{{ path('app_admin_products_delete', {'id': item.id}) }}" type="button" class="btn btn-primary">Confirmer</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div> #}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
         <div>
             <h2 class="my-4 fs-3">Ajouter un produit</h2>
             {{ form_start(productForm) }}
