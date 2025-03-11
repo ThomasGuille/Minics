@@ -55,9 +55,10 @@ final class AdminController extends AbstractController
 
             // stmt->execute()
             $entityManager->flush();
+            $categoryTitle = $category->getTitle();
 
             // $_SESSION["success"] = "La catégorie a été enregistrée."
-            $this->addFlash("success", "La catégorie a été enregistrée.");
+            $this->addFlash("success", "La catégorie <strong class='text-white'>$categoryTitle</strong> a été enregistrée.");
             return $this->redirectToRoute("app_admin_category");
         }
 
@@ -115,12 +116,13 @@ final class AdminController extends AbstractController
     #[Route('/admin/category/delete/{id}', name: 'app_admin_category_delete')]
     public function adminCategoryDelete($id, EntityManagerInterface $entityManager, CategoryRepository $repoCategory) {
         $category = $repoCategory->find($id);
-        dump($category);
+        // dump($category);
+        $categoryTitle = $category->getTitle();
 
         // DELETE FROM category WHERE id = $id
         $entityManager->remove($category);
         $entityManager->flush();
-        $this->addFlash("success", "La catégorie a été supprimée");
+        $this->addFlash("success", "La catégorie <strong class'text-white'>$categoryTitle</strong> a été supprimée");
 
         return $this->redirectToRoute("app_admin_category");
     }
