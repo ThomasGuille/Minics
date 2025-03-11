@@ -30,9 +30,13 @@ final class AdminController extends AbstractController
     #[Route('/admin/products/update/{id}', name: 'app_admin_product_update')]
     public function adminProducts(?Product $product, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, ProductRepository $repoProduct): Response
     {
-        dump($product);
+        // ?Product $product : le ? veut dire que par défaut $product est null
+        // dump($product);
         
-        $product = new Product;
+        if(!$product){
+            $product = new Product;
+        }
+
         $form = $this->createForm(ProductFormType::class, $product);
 
         $form->handleRequest($request);
@@ -65,12 +69,13 @@ final class AdminController extends AbstractController
             return $this->redirectToRoute('app_admin_products');
         }
 
-        // il est également possible de: $repoProduct = $entityManager->getRepository(Product::class); au lieu de l'importer en argument de la méthode
+        // il est également possible de: $repoProduct = $entityManager->getRepository(Product::class); au lieu de l'importer en argument de la méthode adminProduct()
         $dbProduct = $repoProduct->findAll();
 
         return $this->render('admin/products.html.twig', [
             'productForm' => $form,
-            'dbProduct' => $dbProduct
+            'dbProduct' => $dbProduct,
+            'pictureFile' => $product->getPicture()
         ]);
     }
 

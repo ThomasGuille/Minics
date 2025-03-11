@@ -41,7 +41,7 @@
                             <td>{{ item.createdAt|date("d/m/Y à H:i:s") }}</td>
                             <td>
                                 <a href="{{ path('app_admin_category_update', {'id': item.id}) }}" class="btn btn-dark mb-2" ><i class="fa-solid fa-pen"></i></a>
-                                <buuton type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#category-{{ item.id }}"></i></button>
+                                <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#category-{{ item.id }}"></i></button>
                             </td>
 
                             <!-- Modal -->

@@ -99,6 +99,11 @@
                 {{ form_row(productForm.stock) }}
                 {{ form_row(productForm.price) }}
                 {{ form_row(productForm.picture) }}
+                <div class="col-12 col-sm-6 col-md-2 col-lg-2 my-4">
+                    {% if pictureFile is not null %}
+                        <img src="{{ asset('uploads/images/' ~ pictureFile) }}" alt="picture product">
+                    {% endif %}
+                </div>
 
                 <button type="submit" class="btn btn-dark">Enregistrer</button>
             {{ form_end(productForm) }}
