@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
+use PDO;
+use App\Entity\Product;
 use App\Entity\Category;
+use App\Form\ProductFormType;
 use App\Form\CategoryFormType;
-use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManager;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 final class AdminController extends AbstractController
 {
@@ -21,9 +24,20 @@ final class AdminController extends AbstractController
     }
 
     #[Route('/admin/products', name: 'app_admin_products')]
-    public function adminProducts(): Response
+    public function adminProducts(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('admin/products.html.twig');
+        $product = new Product;
+        $form = $this->createForm(ProductFormType::class, $product);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $product->setCreatedAt(new \DateTimeImmutable);
+            $entityManager->persist($product);
+        }
+
+        return $this->render('admin/products.html.twig', [
+            'productForm' => $form
+        ]);
     }
 
     #[Route('/admin/orders', name: 'app_admin_orders')]
