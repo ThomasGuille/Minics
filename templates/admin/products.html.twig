@@ -52,7 +52,7 @@
                             <td>{{ item.size }}</td>
                             <td>{{ item.color }}</td>
                             <td>{{ item.gender }}</td>
-                            <td>{{ item.description }}</td>
+                            <td>{{ item.description|slice(0, 30) }}[...]</td>
                             <td>{{ item.stock }}</td>
                             <td>{{ item.price }}€</td>
                             <td>{{ item.createdAt|date('d/m/Y à H:i:s') }}</td>
