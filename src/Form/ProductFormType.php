@@ -9,9 +9,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProductFormType extends AbstractType
 {
@@ -54,10 +56,48 @@ class ProductFormType extends AbstractType
                     '512G' => '512G'
                 ]
             ])
-            ->add('gender')
-            ->add('picture')
-            ->add('price')
-            ->add('stock')
+            ->add('gender', ChoiceType::class, [
+                'label' => 'Genre',
+                'choices' => [
+                    'Homme' => 'homme',
+                    'Femme' => 'femme',
+                    'Mixte' => 'mixte'
+                ]
+            ])
+            ->add('picture', FileType::class, [
+                'label' => 'Photo',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '100M',
+                        'mimeType' => [
+                            'images/jpg',
+                            'images/jpeg',
+                            'images/png'
+                        ],
+                        'mimeTypeMessage' => 'Formats autorisés: jpg, jpeg et png.'
+                    ])
+                ]
+            ])
+            ->add('price', TextType::class, [
+                'label' => 'Prix',
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuillez indiquer un prix.'
+                    ])
+                ]
+            ])
+            ->add('stock', TextType::class, [
+                'label' => 'Stock',
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuillez saisir un stock.'
+                    ])
+                ]
+            ])
             ->add('description', TextareaType::class, [
                 'label' => 'description',
                 'required' => false,
