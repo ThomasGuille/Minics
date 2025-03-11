@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class AdminController extends AbstractController
 {
@@ -24,7 +26,7 @@ final class AdminController extends AbstractController
     }
 
     #[Route('/admin/products', name: 'app_admin_products')]
-    public function adminProducts(Request $request, EntityManagerInterface $entityManager): Response
+    public function adminProducts(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $product = new Product;
         $form = $this->createForm(ProductFormType::class, $product);
@@ -33,7 +35,23 @@ final class AdminController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             // $product->setCreatedAt(new \DateTimeImmutable);
             $pictureFile = $form->get('picture')->getData();
-            dump($pictureFile);
+            // dump($pictureFile);
+            if($pictureFile){
+                $originalFileName = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME); // retourne le nom du fichier d'origine sans l'extension
+                // dump($originalFileName);
+                $safeFileName = $slugger->slug($originalFileName);  // sécurise le nom du fichier (supprime espaces,...)
+                // dump($safeFileName);
+
+                $newFileName = $safeFileName . '-' . uniqid() . '.' .$pictureFile->guessExtension();    // renomme le fichier (p1-67d02ac9ae173.png)
+                // dump($newFileName); 
+                // dump($this->getParameter('image_directory'));
+                $currentPath = $this->getParameter('image_directory');  // récupère le chemin donné dans le fichier services.yaml
+                try{
+                    $pictureFile->move($currentPath, $newFileName); // copie le fichier dans le dossier spécifié
+                }catch (FileException $e) {
+                    dump($e);
+                }
+            }
             // $entityManager->persist($product);
             // $entityManager->flush();
         }
