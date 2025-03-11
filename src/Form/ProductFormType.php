@@ -70,13 +70,13 @@ class ProductFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '100M',
-                        'mimeType' => [
-                            'images/jpg',
-                            'images/jpeg',
-                            'images/png'
+                        'maxSize' => '10M',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                            'image/png'
                         ],
-                        'mimeTypeMessage' => 'Formats autorisés: jpg, jpeg et png.'
+                        'mimeTypesMessage' => 'Formats autorisés: jpg, jpeg et png.'
                     ])
                 ]
             ])

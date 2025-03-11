@@ -31,8 +31,11 @@ final class AdminController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $product->setCreatedAt(new \DateTimeImmutable);
-            $entityManager->persist($product);
+            // $product->setCreatedAt(new \DateTimeImmutable);
+            $pictureFile = $form->get('picture')->getData();
+            dump($pictureFile);
+            // $entityManager->persist($product);
+            // $entityManager->flush();
         }
 
         return $this->render('admin/products.html.twig', [

@@ -6,6 +6,26 @@
 
 {% block body %}
 
+    <div class="container mb-4">
+        <div>
+            <h2 class="my-4 fs-3">Ajouter un produit</h2>
+            {{ form_start(productForm) }}
 
+                {{ form_row(productForm.reference) }}
+                {{ form_row(productForm.title) }}
+                {{ form_row(productForm.category) }}
+                {{ form_row(productForm.size) }}
+                {{ form_row(productForm.color) }}
+                {{ form_row(productForm.gender) }}
+                {{ form_row(productForm.description) }}
+                {{ form_row(productForm.stock) }}
+                {{ form_row(productForm.price) }}
+                {{ form_row(productForm.picture) }}
+
+                <button type="submit" class="btn btn-dark">Enregistrer</button>
+            {{ form_end(productForm) }}
+
+        </div>
+    </div>
     
 {% endblock %}
