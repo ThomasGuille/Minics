@@ -33,6 +33,7 @@ final class AdminController extends AbstractController
         // ?Product $product : le ? veut dire que par défaut $product est null
         // dump($product);
         
+        // Si $product n'est pas (!), alors c'est qu'il n'y a pas d'id en url, donc on crée un nouvel objet Product, dans le cas contraire (donc si il y a un id dans l'url), $product contient les données du produit correspondant, qui sont alors affichées dans le formulaire (symfony va directement chercher les infos en BDD)
         if(!$product){
             $product = new Product;
         }
@@ -61,11 +62,17 @@ final class AdminController extends AbstractController
                 }
                 $product->setPicture($newFileName);
             }
+
+            if($product->getId()){
+                $msgValid = "Les modifications ont été effectuées.";
+            }else{
+                $msgValid = "L'article a été enregistré.";
+            }
             $product->setCreatedAt(new \DateTimeImmutable);
             // dump($product);
             $entityManager->persist($product);
             $entityManager->flush();
-            $this->addFlash('success', "L'article a été ajouté.");
+            $this->addFlash('success', $msgValid);
             return $this->redirectToRoute('app_admin_products');
         }
 
@@ -79,12 +86,17 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    // #[Route('/admin/products/update/{id}', name: 'app_admin_product_update')]
-    // public function adminProductUpdate($id, Product $product, EntityManagerInterface $entityManager, ProductRepository $repoProduct, Request $request): Response {
-        
-    // }
-
-
+    #[Route('/admin/products/delete/{id}', name: 'app_admin_product_delete')]
+    public function adminProductDelete($id, EntityManagerInterface $entityManager, ProductRepository $repoProduct)
+    {
+        $product = $repoProduct->find($id);
+        dump($product);
+        $productTitle = $product->getTitle();
+        $entityManager->remove($product);
+        $entityManager->flush();
+        $this->addFlash('success', "Le produit <strong class='text-white'>$productTitle</strong> a été supprimé.");
+        return $this->redirectToRoute('app_admin_products');
+    }
 
 
     #[Route('/admin/orders', name: 'app_admin_orders')]
@@ -177,13 +189,15 @@ final class AdminController extends AbstractController
     #[Route('/admin/category/delete/{id}', name: 'app_admin_category_delete')]
     public function adminCategoryDelete($id, EntityManagerInterface $entityManager, CategoryRepository $repoCategory) {
         $category = $repoCategory->find($id);
-        // dump($category);
-        $categoryTitle = $category->getTitle();
+        if($category->getProducts()->isEmpty()){
+            $categoryTitle = $category->getTitle();
+            $entityManager->remove($category);  // DELETE FROM category WHERE id = $id
+            $entityManager->flush();
+            $this->addFlash("success", "La catégorie <strong class='text-white'>$categoryTitle</strong> a été supprimée");
+        }else{
+            $this->addFlash("danger", "Impossible de supprimer une catégorie liée à un produit existant.");
+        }
 
-        // DELETE FROM category WHERE id = $id
-        $entityManager->remove($category);
-        $entityManager->flush();
-        $this->addFlash("success", "La catégorie <strong class'text-white'>$categoryTitle</strong> a été supprimée");
 
         return $this->redirectToRoute("app_admin_category");
     }
