@@ -4,4 +4,49 @@
 
 {% block body %}
 
+<div class="container my-5">
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Titre</th>
+                <th>Référence</th>
+                <th>Catégorie</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Prix total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if dataCart is empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucun article dans le panier</td>
+                </tr>
+            {% else %}
+                {% for item in dataCart %}
+                    {# {{ dump(item) }} #}
+                    <tr>
+                        <td><img class="col-5" src="{{ asset('uploads/images/' ~ item.product.picture) }}" alt="{{ item.product.title }}"></td>
+                        <td>{{ item.product.title }}</td>
+                        <td>{{ item.product.reference }}</td>
+                        <td>{{ item.product.category.title }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.price }}€</td>
+                        <td>{{ item.product.price * item.quantity }}€</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Total du panier: </td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}

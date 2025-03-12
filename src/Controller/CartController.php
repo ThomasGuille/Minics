@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,9 +13,39 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CartController extends AbstractController
 {
     #[Route('/cart', name: 'app_cart')]
-    public function cart(): Response
+    public function cart(SessionInterface $session, ProductRepository $repoProduct): Response
     {
-        return $this->render('cart/index.html.twig', []);
+        // On r&cupère les données du panier dans la session
+        $cart = $session->get('cart');
+        // dump($cart);
+        // On initialise
+        $dataCart = [];
+        $total = 0;
+
+        // On boucle la session
+        // $id est l'id du produit récupéré pour chaque tour de boucle
+        // $quantity est la quantité
+        if(!empty($cart)){
+            foreach($cart as $id => $quantity){
+                $product = $repoProduct->find($id); // On sélectionne en BDD les infos relative à l'objet correspondant à l'id
+                // dump($product);
+    
+                // On ajoute les données bouclées dans le tableau ARRAY
+                $dataCart[] = [
+                    "product" => $product,  // On envoie l'objet Entity Product directement dans l'array
+                    "quantity" => $quantity
+                ];
+    
+                $total += $product->getPrice() * $quantity; // Calcul du montant total
+            }
+        }
+        // dump($dataCart);
+        // dump($total);
+
+        return $this->render('cart/index.html.twig', [
+            'dataCart' => $dataCart,
+            'total' => $total
+        ]);
     }
 
     #[Route('/cart/add/{id}', name: 'app_cart_add')]
@@ -25,8 +56,8 @@ final class CartController extends AbstractController
         $id = $product->getId();    // On stock l'id du produit sélectionné dans une variable
         $quantity = $request->request->get('quantity'); // On stock la quantité saisie dans le formulaire dans une variable
 
-        dump($id);
-        dump($quantity);
+        // dump($id);
+        // dump($quantity);
         
         if(isset($cart[$id])){
             $cart[$id] = $cart[$id] + $quantity;
@@ -36,6 +67,8 @@ final class CartController extends AbstractController
         
         // On sauvegarde la session
         $session->set('cart', $cart);
-        dump($cart);
+        // dump($cart);
+
+        return $this->redirectToRoute('app_cart');
     }
 }
