@@ -32,7 +32,7 @@ final class AppController extends AbstractController
     public function appProductDetails($id, ProductRepository $repoProduct): Response {
         $product = $repoProduct->find($id);
         // dump($product);
-        return $this->render('app/product_details.html.twig', [
+        return $this->render('app/product.details.html.twig', [
             'product' => $product
         ]);
     }
