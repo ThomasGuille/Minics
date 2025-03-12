@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -9,9 +11,30 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AppController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(ProductRepository $repoProducts): Response
     {
-        return $this->render('app/index.html.twig');
+        /*
+            1-Sélectionner tous les produits
+            2-Afficher les produits
+            3-Créer une nouvelle méthode appProductDetails avec la route 'app/product/details/{id}' / app_product_details
+            4-Afficher les infos du produit
+        */
+
+        $dbProducts = $repoProducts->findAll();
+        dump($dbProducts);
+
+        return $this->render('app/index.html.twig', [
+            'dbProducts' => $dbProducts
+        ]);
+    }
+
+    #[Route('/product/details/{id}', name: 'app_product_details')]
+    public function appProductDetails($id, ProductRepository $repoProduct): Response {
+        $product = $repoProduct->find($id);
+        dump($product);
+        return $this->render('app/product_details.html.twig', [
+            'product' => $product
+        ]);
     }
 
     #[Route('/about', name: 'app_about')]

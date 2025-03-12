@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Minics | Details produit{% endblock %}
+
+{% block body %}
+    {# {{ dump(product) }} #}
+    <div class="container">
+        <h2 class="text-center my-3 p-2">{{ product.title }}</h2>
+
+        <div class="d-flex justify-content-between mb-5">
+            <div>
+                <img src="{{ asset('uploads/images/' ~ product.picture) }}" alt="{{ product.title }}">
+            </div>
+
+            <div class="ml-3">
+                <div class="d-flex justify-content-around">
+                <p><strong>Référence: </strong>{{ product.reference }}</p>
+                <p><strong>Catégorie: </strong>{{ product.category.title }}</p>
+                </div>
+
+                <div class="d-flex justify-content-evenly">
+                    <p><strong>Couleur: </strong>{{ product.color }}</p>
+                    <p><strong>Mémoire: </strong>{{ product.size }}</p>
+                    <p><strong>Genre: </strong>{{ product.gender }}</p>
+                </div>
+
+                <div>
+                    <p><strong>Description: </strong>{{ product.description }}</p>
+                    <p class="fs-4"><strong>{{ product.price }}€</strong></p>
+                </div>
+
+                <div class="mb-4">
+                    <select name="quantity" id="quantity">
+                        {% for i in 1..10 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-dark p-1">Ajouter au panier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
