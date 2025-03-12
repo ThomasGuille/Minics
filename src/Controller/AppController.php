@@ -21,7 +21,7 @@ final class AppController extends AbstractController
         */
 
         $dbProducts = $repoProducts->findAll();
-        dump($dbProducts);
+        // dump($dbProducts);
 
         return $this->render('app/index.html.twig', [
             'dbProducts' => $dbProducts
@@ -31,7 +31,7 @@ final class AppController extends AbstractController
     #[Route('/product/details/{id}', name: 'app_product_details')]
     public function appProductDetails($id, ProductRepository $repoProduct): Response {
         $product = $repoProduct->find($id);
-        dump($product);
+        // dump($product);
         return $this->render('app/product_details.html.twig', [
             'product' => $product
         ]);

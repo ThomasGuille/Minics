@@ -108,37 +108,37 @@
       </div>
       <div class="row">
         {% for item in dbProducts %}
-        <div class="col-sm-6 col-lg-4">
-          <div class="box">
-            <div class="img-box">
-              <img src="{{ asset('uploads/images/' ~ item.picture) }}" alt="{{ item.title }}">
-              <a href="" class="add_cart_btn">
-                <span>
-                  Ajouter au panier
-                </span>
-              </a>
-            </div>
-            <div class="detail-box">
-              <a href="{{ path('app_product_details', {'id': item.id}) }}">
-                <h5 class="text-black">
-                  {{ item.title }}
-                </h5>
-                <div class="product_info">
+          <div class="col-sm-6 col-lg-4">
+            <div class="box">
+              <div class="img-box">
+                <img src="{{ asset('uploads/images/' ~ item.picture) }}" alt="{{ item.title }}">
+                <a href="{{ path('app_product_details', {'id': item.id}) }}" class="add_cart_btn">
+                  <span>
+                    En savoir plus
+                  </span>
+                </a>
+              </div>
+              <div class="detail-box">
+                <a href="{{ path('app_product_details', {'id': item.id}) }}">
                   <h5 class="text-black">
-                    <span class="text-black">{{ item.price }}</span>€
+                    {{ item.title }}
                   </h5>
-                  <div class="star_container">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
+                  <div class="product_info">
+                    <h5 class="text-black">
+                      <span class="text-black">{{ item.price }}</span>€
+                    </h5>
+                    <div class="star_container">
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                    </div>
                   </div>
-                </div>
-              </a>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
         {% endfor %}
       </div>
       <div class="btn_box">
