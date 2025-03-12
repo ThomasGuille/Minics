@@ -34,7 +34,7 @@
                     {% if product.stock < 10 %}
                         <p class="text-warning">Attention, il n'en reste que {{ product.stock }} en stock</p>
                     {% endif %}
-                    <form action="" method="post" class="d-flex align-items-center mb-4">
+                    <form action="{{ path('app_cart_add', {'id': product.id} )}}" method="post" class="d-flex align-items-center mb-4">
                         <select name="quantity" id="quantity" class="">
                             {% for i in 1..product.stock %}
                                 {% if i <= product.stock and i <= 10 %}
