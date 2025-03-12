@@ -30,7 +30,9 @@
                 </div>
 
 
-                {% if product.stock != 0 %}
+                {% if product.stock == 0 %}
+                    <p class="text-danger">Désolé, cet article n'est plus en stock</p>
+                {% else %}
                     {% if product.stock < 10 %}
                         <p class="text-danger">Attention, il n'en reste que {{ product.stock }} en stock</p>
                     {% endif %}
@@ -48,8 +50,6 @@
                         </select>
                         <button class="btn btn-dark p-1">Ajouter au panier</button>
                     </div>
-                {% else %}
-                    <p class="text-danger">Désolé, cet article n'est plus en stock</p>
                 {% endif %}
             </div>
         </div>
