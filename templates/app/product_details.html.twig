@@ -34,7 +34,7 @@
                     <p class="text-danger">Désolé, cet article n'est plus en stock</p>
                 {% else %}
                     {% if product.stock < 10 %}
-                        <p class="text-danger">Attention, il n'en reste que {{ product.stock }} en stock</p>
+                        <p class="text-warning">Attention, il n'en reste que {{ product.stock }} en stock</p>
                     {% endif %}
                     <div class="mb-4">
                         <select name="quantity" id="quantity">
