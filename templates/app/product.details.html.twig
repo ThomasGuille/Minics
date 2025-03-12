@@ -34,20 +34,16 @@
                     {% if product.stock < 10 %}
                         <p class="text-warning">Attention, il n'en reste que {{ product.stock }} en stock</p>
                     {% endif %}
-                    <div class="mb-4">
-                        <select name="quantity" id="quantity">
-                        {% if product.stock < 10 %}
-                            {% for i in 1.. product.stock %}
-                                <option value="{{ i }}">{{ i }}</option>
+                    <form action="" method="post" class="d-flex align-items-center mb-4">
+                        <select name="quantity" id="quantity" class="">
+                            {% for i in 1..product.stock %}
+                                {% if i <= product.stock and i <= 10 %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
                             {% endfor %}
-                        {% else %}
-                            {% for i in 1..10 %}
-                                <option value="{{ i }}">{{ i }}</option>
-                            {% endfor %}
-                        {% endif %}
                         </select>
-                        <button class="btn btn-dark p-1">Ajouter au panier</button>
-                    </div>
+                        <button class="btn btn-dark p-1 ml-2">Ajouter au panier</button>
+                    </form>
                 {% else %}
                     <p class="text-danger">Désolé, cet article n'est plus en stock</p>
                 {% endif %}
