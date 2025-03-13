@@ -5,6 +5,7 @@ namespace App\Controller;
 use PDO;
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\User;
 use App\Form\ProductFormType;
 use App\Form\CategoryFormType;
 use Doctrine\ORM\EntityManager;
@@ -106,8 +107,10 @@ final class AdminController extends AbstractController
     }
 
     #[Route('/admin/users', name: 'app_admin_users')]
-    public function adminUsers(): Response
+    public function adminUsers(User $user): Response
     {
+        
+
         return $this->render('admin/users.html.twig');
     }
 
