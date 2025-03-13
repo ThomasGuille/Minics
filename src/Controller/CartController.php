@@ -79,9 +79,11 @@ final class CartController extends AbstractController
         $product = $repoProduct->find($id);
         $productTitle = $product->getTitle();
         // dump($cart);
-        unset($cart[$id]);
+        if(isset($cart[$id])){
+            unset($cart[$id]);
+        }
         $session->set('cart', $cart);
-        $this->addFlash('success', "Le produit <strong class='text-white'>$productTitle</strong> a été retiré du panier.");
+        $this->addFlash('success', "L'article <strong class='text-white'>$productTitle</strong> a été retiré du panier.");
 
         return $this->redirectToRoute('app_cart');
     }
@@ -102,6 +104,15 @@ final class CartController extends AbstractController
         $cart = $session->get('cart');
         $cart[$id] = $cart[$id] - 1;
         $session->set('cart', $cart);
+
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/delete/', name: 'app_cart_delete')]
+    public function cartDelete(SessionInterface $session)
+    {
+        $session->remove('cart');
+        $this->addFlash("success", "Le panier a été vidé.");
 
         return $this->redirectToRoute('app_cart');
     }
