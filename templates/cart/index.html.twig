@@ -5,6 +5,13 @@
 {% block body %}
 
 <div class="container my-5">
+    {% for label, messages in app.flashes(["success", "danger"]) %}
+        {% for message in messages %}
+            <div class="bg-{{ label }} text-white p-3 mb-3">
+                {{ message|raw }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <table class="table table-borderless">
         <thead>
             <tr>
@@ -31,11 +38,29 @@
                         <td>{{ item.product.title }}</td>
                         <td>{{ item.product.reference }}</td>
                         <td>{{ item.product.category.title }}</td>
-                        <td>{{ item.quantity }}</td>
+                        <td><a href=""><span class="btn btn-dark">-</span></a> {{ item.quantity }} <a href="{{ path('app_cart_add_quantity', {'id': item.product.id}) }}"><span class="btn btn-dark">+</span></a></td>
                         <td>{{ item.product.price }}€</td>
                         <td>{{ item.product.price * item.quantity }}€</td>
                         <td><button type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#product-{{ item.product.id }}"></i></button></td>
                     </tr>
+                    
+                    <div class="modal fade" id="product-{{ item.product.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation suppression</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Voulez vous réellement supprimer le produit <strong>{{ item.product.title }}</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <a href="{{ path('app_cart_remove_product', {'id': item.product.id}) }}" type="button" class="btn btn-primary">Confirmer</a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
                 <tr>
                     <td></td>

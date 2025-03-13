@@ -71,4 +71,29 @@ final class CartController extends AbstractController
 
         return $this->redirectToRoute('app_cart');
     }
+
+    #[Route('/cart/removeproduct/{id}', name: 'app_cart_remove_product')]
+    public function cartRemoveProduct($id, SessionInterface $session, ProductRepository $repoProduct)
+    {
+        $cart = $session->get('cart');
+        $product = $repoProduct->find($id);
+        $productTitle = $product->getTitle();
+        // dump($cart);
+        unset($cart[$id]);
+        $session->set('cart', $cart);
+        $this->addFlash('success', "Le produit <strong class='text-white'>$productTitle</strong> a été retiré du panier.");
+
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/addquantity/{id}', name: 'app_cart_add_quantity')]
+    public function cartAddQuantity($id, SessionInterface $session)
+    {
+        $cart = $session->get('cart');
+        $quantity = $cart[$id];
+        $quantity = $quantity + 1;
+        dump($quantity);
+
+        return $this->redirectToRoute('app_cart');
+    }
 }
