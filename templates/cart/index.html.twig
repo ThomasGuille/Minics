@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="container my-5">
-    {% for label, messages in app.flashes(["success", "danger"]) %}
+    {% for label, messages in app.flashes(["success", "danger", "warning"]) %}
         {% for message in messages %}
             <div class="bg-{{ label }} text-white p-3 mb-3">
                 {{ message|raw }}
@@ -82,7 +82,7 @@
     </table>
     {% if dataCart is not empty %}
         {% if app.user %}
-            <a class="btn btn-dark mr-2" href="">Valider le panier</a>
+            <a class="btn btn-dark mr-2" href="{{ path('app_cart_payment') }}">Valider le panier</a>
             <button type="button" class="btn btn-danger" href="" data-bs-toggle="modal" data-bs-target="#cart-modal-delete">Vider le panier</button>
             <div class="modal fade" id="cart-modal-delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

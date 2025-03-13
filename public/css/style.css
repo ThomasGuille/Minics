@@ -783,4 +783,8 @@ a:focus {
 .product__picture{
   width: 100px;
 }
+
+.active__link{
+  color: rgb(236, 202, 7);
+}
 /*# sourceMappingURL=style.css.map */
