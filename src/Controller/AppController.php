@@ -20,7 +20,7 @@ final class AppController extends AbstractController
             4-Afficher les infos du produit
         */
 
-        $dbProducts = $repoProducts->findAll();
+        $dbProducts = $repoProducts->getMaxProducts();
         // dump($dbProducts);
 
         return $this->render('app/index.html.twig', [
