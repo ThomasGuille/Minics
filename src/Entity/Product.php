@@ -50,17 +50,6 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    /**
-     * @var Collection<int, OrderDetails>
-     */
-    #[ORM\ManyToMany(targetEntity: OrderDetails::class, mappedBy: 'product')]
-    private Collection $orderDetails;
-
-    public function __construct()
-    {
-        $this->orderDetails = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -194,33 +183,6 @@ class Product
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, OrderDetails>
-     */
-    public function getOrderDetails(): Collection
-    {
-        return $this->orderDetails;
-    }
-
-    public function addOrderDetail(OrderDetails $orderDetail): static
-    {
-        if (!$this->orderDetails->contains($orderDetail)) {
-            $this->orderDetails->add($orderDetail);
-            $orderDetail->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderDetail(OrderDetails $orderDetail): static
-    {
-        if ($this->orderDetails->removeElement($orderDetail)) {
-            $orderDetail->removeProduct($this);
-        }
 
         return $this;
     }
