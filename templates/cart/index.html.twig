@@ -38,7 +38,13 @@
                         <td>{{ item.product.title }}</td>
                         <td>{{ item.product.reference }}</td>
                         <td>{{ item.product.category.title }}</td>
-                        <td><a href=""><span class="btn btn-dark">-</span></a> {{ item.quantity }} <a href="{{ path('app_cart_add_quantity', {'id': item.product.id}) }}"><span class="btn btn-dark">+</span></a></td>
+                        <td>
+                            {% if item.quantity > 1 %}
+                                <a href="{{ path('app_cart_remove_quantity', {'id': item.product.id}) }}"><span class="btn btn-dark p-1">-</span></a>
+                            {% else %}
+                                <a><span class="btn btn-light p-1">-</span></a>
+                            {% endif %}
+                             {{ item.quantity }} <a href="{{ path('app_cart_add_quantity', {'id': item.product.id}) }}"><span class="btn btn-dark p-1">+</span></a></td>
                         <td>{{ item.product.price }}€</td>
                         <td>{{ item.product.price * item.quantity }}€</td>
                         <td><button type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#product-{{ item.product.id }}"></i></button></td>

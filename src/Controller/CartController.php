@@ -90,9 +90,18 @@ final class CartController extends AbstractController
     public function cartAddQuantity($id, SessionInterface $session)
     {
         $cart = $session->get('cart');
-        $quantity = $cart[$id];
-        $quantity = $quantity + 1;
-        dump($quantity);
+        $cart[$id] = $cart[$id] + 1;
+        $session->set('cart', $cart);
+
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/removequantity/{id}', name: 'app_cart_remove_quantity')]
+    public function cartRemoveQuantity($id, SessionInterface $session)
+    {
+        $cart = $session->get('cart');
+        $cart[$id] = $cart[$id] - 1;
+        $session->set('cart', $cart);
 
         return $this->redirectToRoute('app_cart');
     }
