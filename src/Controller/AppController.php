@@ -44,9 +44,12 @@ final class AppController extends AbstractController
     }
 
     #[Route('/products', name: 'app_products')]
-    public function appProducts(): Response
+    public function appProducts(ProductRepository $product): Response
     {
-        return $this->render('app/products.html.twig');
+        $dbProducts = $product->findAll();
+        return $this->render('app/products.html.twig', [
+            'dbProducts' => $dbProducts
+        ]);
     }
 
     #[Route('/why', name: 'app_why')]

@@ -15,6 +15,7 @@
                 <th>Quantité</th>
                 <th>Prix unitaire</th>
                 <th>Prix total</th>
+                <th>Retirer</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
                         <td>{{ item.quantity }}</td>
                         <td>{{ item.product.price }}€</td>
                         <td>{{ item.product.price * item.quantity }}€</td>
+                        <td><button type="button" class="btn btn-danger"><i class="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#product-{{ item.product.id }}"></i></button></td>
                     </tr>
                 {% endfor %}
                 <tr>
@@ -47,6 +49,11 @@
             {% endif %}
         </tbody>
     </table>
+    {% if app.user %}
+        <button type="submit" class="btn btn-dark">Valider le panier</button>
+    {% else %}
+        <a class="btn btn-dark" href="{{ path('app_login') }}">Identifiez vous pour continuer</a>
+    {% endif %}
 </div>
 
 {% endblock %}
