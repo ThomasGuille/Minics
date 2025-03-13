@@ -27,7 +27,7 @@
                 {% for item in dataCart %}
                     {# {{ dump(item) }} #}
                     <tr>
-                        <td><img class="col-5" src="{{ asset('uploads/images/' ~ item.product.picture) }}" alt="{{ item.product.title }}"></td>
+                        <td><img class="product__picture" src="{{ asset('uploads/images/' ~ item.product.picture) }}" alt="{{ item.product.title }}"></td>
                         <td>{{ item.product.title }}</td>
                         <td>{{ item.product.reference }}</td>
                         <td>{{ item.product.category.title }}</td>
@@ -49,10 +49,12 @@
             {% endif %}
         </tbody>
     </table>
-    {% if app.user %}
-        <button type="submit" class="btn btn-dark">Valider le panier</button>
-    {% else %}
-        <a class="btn btn-dark" href="{{ path('app_login') }}">Identifiez vous pour continuer</a>
+    {% if dataCart is not empty %}
+        {% if app.user %}
+            <a class="btn btn-dark" href="">Valider le panier</a>
+        {% else %}
+            <a class="btn btn-dark" href="{{ path('app_login') }}">Identifiez vous pour continuer</a>
+        {% endif %}
     {% endif %}
 </div>
 
