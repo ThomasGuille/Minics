@@ -5,12 +5,14 @@ namespace App\Controller;
 use PDO;
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\Orders;
 use App\Entity\User;
 use App\Form\ProductFormType;
 use App\Form\CategoryFormType;
 use Doctrine\ORM\EntityManager;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\OrdersRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +25,15 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 final class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_admin')]
-    public function admin(): Response
+    public function admin(ProductRepository $productsRepo, UserRepository $userRepo, OrdersRepository $ordersRepo): Response
     {
+        $products = $productsRepo->findAll();
+        $users = $userRepo->findAll();
+        $orders = $ordersRepo->findAll();
+        dump($products);
+        dump($users);
+        dump($orders);
+
         return $this->render('admin/index.html.twig');
     }
 
@@ -111,7 +120,7 @@ final class AdminController extends AbstractController
     public function adminUsers(UserRepository $userRepo): Response
     {
         $dbUser = $userRepo->findAll();
-        dump($dbUser);
+        // dump($dbUser);
 
         return $this->render('admin/users.html.twig', [
             'dbUser' => $dbUser
@@ -123,12 +132,15 @@ final class AdminController extends AbstractController
     {
         $id = $user->getId();
         $currentUser = $userRepo->find($id);
-        $newRole = [$request->request->get('role')];
-        dump($newRole);
-        
-        
+        $newRole = $request->request->get('role');
+        // dump($currentUser);
+        // dump($newRole);
+        $user->setRoles([$newRole]);
+        // dump($user);
+        $entityManager->persist($currentUser);
+        $entityManager->flush();
 
-        // return $this->redirectToRoute('app_admin_users');
+        return $this->redirectToRoute('app_admin_users');
     }
 
     #[Route('/admin/category', name: 'app_admin_category')]
