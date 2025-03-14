@@ -34,6 +34,8 @@ final class AdminController extends AbstractController
         dump($users);
         dump($orders);
 
+        
+
         return $this->render('admin/index.html.twig');
     }
 
