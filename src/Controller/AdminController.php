@@ -11,6 +11,7 @@ use App\Form\CategoryFormType;
 use Doctrine\ORM\EntityManager;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -107,11 +108,27 @@ final class AdminController extends AbstractController
     }
 
     #[Route('/admin/users', name: 'app_admin_users')]
-    public function adminUsers(User $user): Response
+    public function adminUsers(UserRepository $userRepo): Response
     {
+        $dbUser = $userRepo->findAll();
+        dump($dbUser);
+
+        return $this->render('admin/users.html.twig', [
+            'dbUser' => $dbUser
+        ]);
+    }
+
+    #[Route('/admin/users/update/{id}', name: 'app_admin_users_update')]
+    public function adminUserUpdate(UserRepository $userRepo, User $user, Request $request, EntityManagerInterface $entityManager)
+    {
+        $id = $user->getId();
+        $currentUser = $userRepo->find($id);
+        $newRole = [$request->request->get('role')];
+        dump($newRole);
+        
         
 
-        return $this->render('admin/users.html.twig');
+        // return $this->redirectToRoute('app_admin_users');
     }
 
     #[Route('/admin/category', name: 'app_admin_category')]

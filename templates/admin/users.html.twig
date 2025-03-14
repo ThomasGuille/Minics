@@ -6,6 +6,55 @@
 
 {% block body %}
 
+    <div class="container mb-4">
+        {% for label, messages in app.flashes(["success", "danger"]) %}
+            {% for message in messages %}
+                <div class="bg-{{ label }} text-white p-3 mb-3">
+                    {{ message|raw }}
+                </div>
+            {% endfor %}
+        {% endfor %}
 
+        <div class="mb-4">
+            <h2 class="my-4 fs-3">Liste des Produits</h2>
+
+            <table class="table table-border">
+                <thead>
+                    <tr>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Adresse</th>
+                        <th>Code postal</th>
+                        <th>Ville</th>
+                        <th>Rôle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in dbUser %}
+                        <tr>
+                            <td>{{ item.firstName }}</td>
+                            <td>{{ item.lastName }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.phone }}</td>
+                            <td>{{ item.address }}</td>
+                            <td>{{ item.zipcode }}</td>
+                            <td>{{ item.city }}</td>
+                            <td>
+                                <form action="{{ path('app_admin_users_update', {'id': item.id}) }}" method="post">
+                                    <select name="role" id="role">
+                                        <option value="ROLE_ADMIN">Admin</option>
+                                        <option {% if item.roles[0] is same as 'ROLE_USER' %} {{ 'selected' }} {% endif %} value="ROLE_USER">User</option>
+                                    </select>
+                                    <button type="submit">OK</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
     
 {% endblock %}
